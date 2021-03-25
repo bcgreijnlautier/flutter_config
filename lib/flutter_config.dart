@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 /// and as a `NSDictionary` for iOS
 class FlutterConfig {
   /// An instance of all environment variables
-  Map<String, dynamic> _variables;
+  Map<String, dynamic>? _variables;
 
   // Private Constructor
   FlutterConfig._internal();
@@ -17,7 +17,7 @@ class FlutterConfig {
 
   /// Variables need to be loaded on app startup, recommend to do it `main.dart`
   static loadEnvVariables() async {
-    final Map<String, dynamic> variables =
+    final Map<String, dynamic>? variables =
         await _channel.invokeMapMethod('loadEnvVariables');
 
     _instance._variables = variables;
@@ -26,7 +26,7 @@ class FlutterConfig {
   /// Returns a specific varible value give a [key]
   static dynamic get(String key) {
     if (_instance._variables != null) {
-      return _instance._variables[key];
+      return _instance._variables![key];
     } else {
       print(
           'FlutterConfig Variables are Empty\n Ensure you have a .env file and you\n have loaded the variables');
@@ -36,7 +36,7 @@ class FlutterConfig {
 
   /// returns all the current loaded variables;
   static Map<String, dynamic> get variables =>
-      _instance._variables != null ? _instance._variables : {};
+      _instance._variables != null ? _instance._variables! : {};
 
   @visibleForTesting
   static loadValueForTesting(Map<String, dynamic> values) {
